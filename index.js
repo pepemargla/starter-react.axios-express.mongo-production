@@ -2,14 +2,29 @@ const express=require('express');
 const mongoose=require('mongoose');
 const bodyParser=require('body-parser');
 
+// IMPORT MODELS
+require('./models/Product');
+
 const app=express();
 
-mongoose.Promise=global.Promise;
-mongoose.connect(process.env.MONGODB_URI||`mongodb://localhost:27017/node-react-starter`);
+mongoose.Promise = global.Promise;
+mongoose.connect(process.env.MONGODB_URI || `mongodb://localhost:27017/node-react-starter`);
 
 app.use(bodyParser.json());
 
+//IMPORT ROUTES
+require('./routes/productRoutes')(app);
 
+//To make our project production ready, we need to add this script
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static('client/build'));
+  
+    const path = require('path');
+    app.get('*', (req,res) => {
+        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+    })
+  
+  }
 
 
 
