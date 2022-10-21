@@ -1,14 +1,17 @@
 const mongoose = require('mongoose');
 const Product = mongoose.model('products');
+// const basePath = process.env.REACT_APP_PUBLIC_URL;
+//const basePath = process.env.REACT_APP_API_ENDPOINT;
+const basePath = "";
 
 module.exports = (app) => {
 
-  app.get(`/api/product`, async (req, res) => {
+  app.get(basePath +`/api/product`, async (req, res) => {
     let products = await Product.find();
     return res.status(200).send(products);
   });
 
-  app.post(`/api/product`, async (req, res) => {
+  app.post(basePath +`/api/product`, async (req, res) => {
     let product = await Product.create(req.body);
     return res.status(201).send({
       error: false,
@@ -16,7 +19,7 @@ module.exports = (app) => {
     })
   })
 
-  app.put(`/api/product/:id`, async (req, res) => {
+  app.put(basePath +`/api/product/:id`, async (req, res) => {
     const {id} = req.params;
 
     let product = await Product.findByIdAndUpdate(id, req.body);
@@ -28,7 +31,7 @@ module.exports = (app) => {
 
   });
 
-  app.delete(`/api/product/:id`, async (req, res) => {
+  app.delete(basePath +`/api/product/:id`, async (req, res) => {
     const {id} = req.params;
 
     let product = await Product.findByIdAndDelete(id);
