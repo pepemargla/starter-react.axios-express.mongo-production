@@ -1,12 +1,20 @@
 const mongoose = require('mongoose');
 const Product = mongoose.model('products');
+const cors = require ('cors');
 // const basePath = process.env.REACT_APP_PUBLIC_URL;
 //const basePath = process.env.REACT_APP_API_ENDPOINT;
 const basePath = "";
 
+var corsOptions = {
+  origin: 'https://webplass.site/',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
 module.exports = (app) => {
 
-  app.get(basePath +`/api/product`, async (req, res) => {
+  
+
+  app.get(basePath +`/api/product`, cors(corsOptions) , async (req, res) => {
     let products = await Product.find();
     return res.status(200).send(products);
   });
